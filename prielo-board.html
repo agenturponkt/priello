@@ -1,0 +1,1485 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PriEllo – Board</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+      <style>
+  *, *::before, *::after { box-sizing: border-box; }
+
+  :root {
+    --green:         #174c3f;
+    --green-dark:    #0d3028;
+    --green-mid:     #1d6352;
+    --green-light:   #eaf4f0;
+    --orange:        #f26a3c;
+    --orange-dark:   #d4541e;
+    --orange-light:  #fff4ee;
+    --bg:            #f2f4f7;
+    --surface:       #ffffff;
+    --surface-2:     #f8f9fb;
+    --border:        #e4e8ef;
+    --border-dark:   #c9d1de;
+    --text:          #111827;
+    --text-muted:    #6b7280;
+    --text-light:    #9ca3af;
+    --done-green:    #059669;
+    --done-bg:       #ecfdf5;
+    --done-border:   #6ee7b7;
+    --ship-amber:    #d97706;
+    --ship-bg:       #fffbeb;
+    --ship-border:   #fcd34d;
+    --holiday-bg:    #fef2f2;
+    --holiday-text:  #dc2626;
+    --radius-sm:     8px;
+    --radius:        14px;
+    --radius-lg:     18px;
+    --shadow-sm:     0 1px 4px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow:        0 4px 20px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+    --shadow-lg:     0 20px 48px rgba(0,0,0,0.14), 0 8px 20px rgba(0,0,0,0.06);
+  }
+
+  body {
+    font-family: 'Sora', Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ════════════════════════
+     HEADER
+  ════════════════════════ */
+  .app-header {
+    background: var(--green-dark);
+    border-radius: var(--radius-lg);
+    padding: 0;
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(13,48,40,0.35);
+    margin-bottom: 22px;
+    position: relative;
+  }
+  .app-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--orange) 0%, transparent 60%);
+  }
+
+  .logo-link {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px 16px 24px;
+    flex-shrink: 0;
+  }
+  .logo {
+    height: 30px;
+    width: auto;
+    display: block;
+    filter: brightness(0) invert(1);
+  }
+
+  .app-header-main {
+    padding: 16px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-left: 1px solid rgba(255,255,255,0.1);
+    padding-left: 20px;
+  }
+  .app-header-main h1 {
+    margin: 0;
+    font-size: 19px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+  }
+  .app-header-main p {
+    margin: 3px 0 0;
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+
+  /* Navigation */
+  .app-nav {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 16px;
+  }
+  .app-nav .nav-item {
+    text-decoration: none;
+    padding: 8px 18px;
+    border-radius: var(--radius-sm);
+    color: rgba(255,255,255,0.55);
+    font-weight: 600;
+    font-size: 13px;
+    white-space: nowrap;
+    transition: background 0.15s, color 0.15s;
+    letter-spacing: 0.01em;
+  }
+  .app-nav .nav-item:hover {
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.9);
+  }
+  .app-nav .nav-item.active {
+    background: var(--orange);
+    color: #fff;
+    box-shadow: 0 2px 12px rgba(242,106,60,0.45);
+  }
+
+  /* ════════════════════════
+     FORM ELEMENTS
+  ════════════════════════ */
+  label {
+    display: block;
+    margin-top: 14px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
+  input, select, textarea {
+    width: 100%;
+    padding: 10px 14px;
+    margin-top: 5px;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-family: inherit;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--text);
+    transition: border-color 0.15s, box-shadow 0.15s;
+    outline: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--green-mid);
+    box-shadow: 0 0 0 3px rgba(23,76,63,0.1);
+  }
+  textarea { min-height: 72px; resize: vertical; }
+
+  /* ════════════════════════
+     BUTTONS
+  ════════════════════════ */
+  button {
+    padding: 11px 22px;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    border: none;
+    background: var(--orange);
+    color: #fff;
+    font-size: 13px;
+    font-family: inherit;
+    font-weight: 700;
+    margin-top: 14px;
+    transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
+    box-shadow: 0 2px 10px rgba(242,106,60,0.25);
+    letter-spacing: 0.02em;
+  }
+  button:hover {
+    background: var(--orange-dark);
+    box-shadow: 0 4px 18px rgba(242,106,60,0.4);
+    transform: translateY(-1px);
+  }
+  button:active { transform: translateY(0); }
+
+  /* ── status-filter ── */
+  .status-filter {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    font-size: 13px;
+    background: var(--surface-2);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+  }
+  .status-filter .status-filter-label {
+    color: var(--text-muted);
+    font-weight: 700;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .status-filter label {
+    display: flex; align-items: center; gap: 5px; margin: 0;
+    font-size: 13px; font-weight: 500; cursor: pointer;
+    text-transform: none; letter-spacing: 0; color: var(--text);
+  }
+  .status-filter input { width: auto; margin: 0; }
+
+  /* legacy */
+  .top-links { margin-left: auto; display: flex; gap: 8px; }
+  .top-links button { margin-top:0; font-size:12px; padding:6px 12px; background:rgba(255,255,255,0.15); color:#fff; border:1px solid rgba(255,255,255,0.25); box-shadow:none; font-weight:600; }
+  .top-links button:hover { background:rgba(255,255,255,0.25); transform:none; box-shadow:none; }
+
+  /* ── LAYOUT ── */
+  .container { display: flex; gap: 20px; align-items: flex-start; }
+  .left, .right {
+    background: var(--surface);
+    padding: 24px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+  }
+  .left  { width: 38%; box-sizing: border-box; border-top: 3px solid var(--green); }
+  .right { width: 62%; box-sizing: border-box; border-top: 3px solid var(--orange); }
+
+  h2 {
+    margin: 0 0 18px;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  h2::before {
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 14px;
+    background: var(--orange);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ── LABEL CHECKLIST ── */
+  .label-checklist {
+    margin-top: 5px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px;
+    background: var(--surface-2);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 16px;
+    max-height: 220px;
+    overflow: auto;
+  }
+  .label-check-item { display:flex; align-items:center; gap:8px; font-size:13px; margin:0; cursor:pointer; }
+  .label-check-item input { width:auto; margin:0; }
+  .label-swatch { width:10px; height:10px; border-radius:3px; display:inline-block; flex:0 0 10px; }
+
+  /* ── CARDS ── */
+  .cards { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+  #cardList { max-height: 640px; overflow-y: auto; padding-right: 4px; }
+
+  .card {
+    padding: 14px 16px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--border-dark);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.2s, transform 0.15s;
+  }
+  .card:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+
+  .card.done {
+    background: var(--done-bg); color: #065f46;
+    border-color: #a7f3d0; border-left-color: var(--done-green);
+  }
+  .card.done .card-date, .card.done .card-notes, .card.done .card-category { color: #047857; }
+
+  .card.shipping {
+    background: var(--ship-bg); color: #78350f;
+    border-color: #fde68a; border-left-color: var(--ship-amber);
+  }
+  .card.shipping .card-date, .card.shipping .card-notes, .card.shipping .card-category { color: #92400e; }
+
+  .card-header { display:flex; justify-content:space-between; align-items:baseline; font-size:14px; font-weight:700; margin-bottom:5px; gap:8px; }
+  .card-title { flex:1; min-width:0; }
+  .card-date { font-size:11px; color:var(--text-muted); font-weight:500; white-space:nowrap; }
+  .card-project { font-size:13px; margin-bottom:7px; color:var(--text-muted); }
+  .card-labels { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:5px; }
+  .card-label { font-size:11px; padding:3px 9px; border-radius:20px; color:#fff; font-weight:700; line-height:1.4; }
+  .card-category { font-size:11px; color:var(--text-muted); margin-top:3px; }
+  .card-notes { font-size:12px; color:var(--text-muted); margin-top:6px; font-style:italic; }
+
+  /* ── FILTER ROW ── */
+  .filter-row { display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
+  .filter-row input, .filter-row select { flex:1; margin-top:0; }
+  .status-filter { margin: 0 0 12px; }
+
+  /* ── COLLAPSE SECTIONS ── */
+  .collapse-section { margin-top:20px; border-top:1px solid var(--border); padding-top:16px; font-size:13px; }
+  .collapse-section summary {
+    cursor:pointer; font-weight:700; color:var(--green); font-size:11px;
+    text-transform:uppercase; letter-spacing:0.07em;
+    list-style:none; display:flex; align-items:center; gap:8px; user-select:none;
+  }
+  .collapse-section summary::-webkit-details-marker { display:none; }
+  .collapse-arrow { font-size:11px; transform:rotate(0deg); transition:transform 0.15s; }
+  details[open] .collapse-arrow { transform:rotate(90deg); }
+  .collapse-section-content { margin-top:14px; font-size:13px; }
+
+  #labelEditor h4 { margin:10px 0 5px; font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.08em; font-weight:700; }
+  #labelEditor input[type="color"] { width:46px; padding:0; height:28px; border-radius:4px; }
+  #editLabelList { font-size:13px; }
+  #legend div { display:flex; align-items:center; margin-bottom:4px; font-size:12px; }
+  #legend span { width:10px; height:10px; border-radius:50%; margin-right:6px; flex:0 0 10px; }
+
+  #machineList { margin-top:6px; font-size:13px; }
+  .machine-item {
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:5px; padding:8px 12px; border-radius:var(--radius-sm);
+    cursor:move; background:var(--surface-2); border:1px solid var(--border);
+  }
+  .machine-item.dragging { opacity:0.5; }
+  .machine-item button { margin-top:0; padding:3px 8px; font-size:11px; background:#fff; color:#dc2626; border:1px solid #fca5a5; box-shadow:none; font-weight:600; }
+  .machine-item button:hover { background:#fef2f2; transform:none; box-shadow:none; }
+
+  /* ── HOLIDAY HINT ── */
+  .holiday-hint { font-size:11px; margin-top:3px; display:block; font-weight:500; }
+  .holiday-hint.red { color:#dc2626; }
+  .holiday-hint.normal { color:var(--text-muted); }
+
+  /* ── MULTI SELECT ── */
+  .multi-select { position:relative; user-select:none; }
+  .multi-select-display { border:1.5px solid var(--border); padding:10px 14px; border-radius:var(--radius-sm); background:var(--surface); font-size:14px; cursor:pointer; }
+  .multi-select-panel { position:absolute; left:0; right:0; background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius-sm); box-shadow:var(--shadow-lg); margin-top:4px; max-height:200px; overflow:auto; z-index:10; padding:8px; display:none; }
+  .multi-select-option { font-size:13px; margin-bottom:4px; }
+
+  /* ── MODAL ── */
+  .modal-backdrop { position:fixed; inset:0; background:rgba(8,16,26,0.65); display:none; align-items:center; justify-content:center; z-index:100; backdrop-filter:blur(6px); padding:16px; }
+  .modal-backdrop.show { display:flex; }
+  .modal {
+    background:var(--surface); border-radius:var(--radius); padding:0;
+    box-shadow:var(--shadow-lg); width:660px; max-width:100%; font-size:14px;
+    border:1px solid var(--border); border-top:3px solid var(--green);
+    display:flex; flex-direction:column;
+    max-height:calc(100vh - 32px);
+  }
+  /* Scrollbarer Inhalt, fixe Buttons unten */
+  .modal-body {
+    padding:24px 28px 0;
+    overflow-y:auto;
+    flex:1;
+  }
+  .modal-footer {
+    padding:16px 28px 24px;
+    border-top:1px solid var(--border);
+    background:var(--surface);
+    border-radius:0 0 var(--radius) var(--radius);
+  }
+  .modal h3 { margin:0 0 18px; font-size:17px; font-weight:800; color:var(--text); letter-spacing:-0.3px; }
+  .modal-row { margin-bottom:12px; display:flex; align-items:center; gap:10px; }
+  .modal-row span.label { font-weight:700; display:inline-block; min-width:82px; font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.06em; }
+  .modal-row input, .modal-row textarea { flex:1; font-size:13px; padding:8px 12px; margin-top:0; }
+  /* Labels als sauberes 3-Spalten-Grid */
+  #modalLabelList {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px 0;
+    margin-top: 4px;
+  }
+  #modalLabelList label {
+    display: grid;
+    grid-template-columns: 18px 13px 1fr;
+    align-items: center;
+    gap: 0 6px;
+    font-size: 13px; font-weight: 400; text-transform: none; letter-spacing: 0;
+    color: var(--text); cursor: pointer; margin-top: 0;
+    padding: 6px 10px 6px 6px;
+    border-radius: 6px; transition: background 0.1s;
+  }
+  #modalLabelList label:hover { background: var(--green-light); }
+  #modalLabelList input[type=checkbox] {
+    width: 15px; height: 15px; margin: 0; flex-shrink: 0;
+    accent-color: var(--green); cursor: pointer;
+  }
+  #modalButtons { display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; align-items:center; }
+  #modalButtons button { margin-top:0; font-size:13px; padding:9px 18px; }
+  #modalButtons .danger { background:#fff; color:#dc2626; border:1.5px solid #fca5a5; box-shadow:none; }
+  #modalButtons .danger:hover { background:#fef2f2; transform:none; box-shadow:none; }
+  #modalCloseBtn { background:#f1f5f9; color:var(--text); border:1px solid var(--border); box-shadow:none; }
+  #modalCloseBtn:hover { background:#e2e8f0; transform:none; box-shadow:none; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) { .container { flex-direction:column; } .left, .right { width:100%; } }
+  @media (max-width: 640px) {
+    body { padding: 10px; }
+    .app-header { flex-wrap:wrap; gap:8px; padding:0; border-radius:var(--radius); }
+    .logo-link { padding: 12px 14px 12px 16px; }
+    .app-header-main { padding: 12px 14px 12px 14px; border-left: none; }
+    .app-nav { width:100%; margin-left:0; padding:8px 10px 12px; gap:4px; }
+    .app-nav .nav-item { flex:1; text-align:center; padding:8px 4px; font-size:11px; }
+
+    /* Formular-Button volle Breite */
+    #cardForm button[type=submit] { width: 100%; }
+
+    /* Karten-Liste: kein festes max-height auf Mobile, Seite scrollt natürlich */
+    #cardList { max-height: none; overflow-y: visible; }
+
+    /* Maschinen-Übersicht-Button volle Breite */
+    #openMachineOverview { width: 100%; }
+
+    /* Filter-Zeile: untereinander stapeln */
+    .filter-row { flex-direction: column; }
+    .filter-row input, .filter-row select { width: 100%; }
+
+    /* Label-Checklist: eine Spalte statt zwei */
+    .label-checklist { grid-template-columns: 1fr; }
+
+    /* Modal auf Mobile: Labels 2-spaltig, body/footer kompakter */
+    #modalLabelList { grid-template-columns: repeat(2,1fr); }
+    .modal-body { padding: 18px 16px 0; }
+    .modal-footer { padding: 14px 16px 18px; }
+    #modalButtons { flex-direction: column; align-items: stretch; }
+    #modalButtons > div { display: flex; gap: 6px; }
+    #modalButtons > div button { flex: 1; }
+    #modalButtons .danger { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <a class="logo-link" href="prielo-board.html" aria-label="Zum Board">
+    <img class="logo" src="https://printex.ch/wp-content/uploads/2025/03/Printex_Logo_CMYK.png" alt="Printex Logo">
+  </a>
+  <div class="app-header-main">
+    <h1>PriEllo</h1>
+    <p>Auftragsboard – Printex AG Dagmersellen</p>
+  </div>
+  <nav class="app-nav" aria-label="Navigation">
+    <a class="nav-item active" href="prielo-board.html">Board</a>
+    <a class="nav-item " href="prielo-calendar.html">Kalender</a>
+    <a class="nav-item " href="prielo-maschinen-uebersicht.html">Maschine</a>
+  </nav>
+</header>
+
+<div class="container">
+
+  <!-- Eingabe & ausklappbare Einstellungen -->
+  <div class="left">
+    <h2>Neue Karte</h2>
+    <form id="cardForm">
+      <label>Auftragsnummer
+        <input id="fAuftrag" required>
+      </label>
+      <label>Kunde
+        <input id="fKunde" required>
+      </label>
+      <label>Projekt
+        <input id="fProjekt" required>
+      </label>
+      <label>Datum
+        <input id="fDatum" type="date" required min="2020-01-01" max="2080-12-31">
+        <small id="fDatumHint" class="holiday-hint normal"></small>
+      </label>
+
+      <label>Größe (Auflage)
+        <select id="fGroesse">
+          <option value="klein">Klein (1-1000 Ex.)</option>
+          <option value="mittel">Mittel (1001-3500 Ex.)</option>
+          <option value="mittelgross">Mittel/Gross (3501-7000 Ex.)</option>
+          <option value="gross">Gross (7001-10000 Ex.)</option>
+        </select>
+      </label>
+
+      <label>Maschinentyp
+        <input id="fMaschine" list="machineOptions" required>
+        <datalist id="machineOptions"></datalist>
+      </label>
+
+      <label>Labels</label>
+      <div id="labelChecklist" class="label-checklist"></div>
+
+      <label>Notiz
+        <textarea id="fNotiz" placeholder="Interne Bemerkung (optional)"></textarea>
+      </label>
+
+      <button type="submit">Karte speichern</button>
+    </form>
+
+    <!-- Label-Verwaltung als Ausklappmenü -->
+    <details id="labelSection" class="collapse-section">
+      <summary><span class="collapse-arrow">▶</span> Label Verwaltung</summary>
+      <div class="collapse-section-content" id="labelEditor">
+        <h4>Neues Label</h4>
+        <input id="newLabelName" placeholder="Name">
+        <input id="newLabelColor" type="color" value="#1abc9c">
+        <button id="createLabel" type="button">Hinzufügen</button>
+
+        <h4>Bestehende Label</h4>
+        <div id="editLabelList"></div>
+
+        <h4>Legende</h4>
+        <div id="legend"></div>
+      </div>
+    </details>
+
+    <!-- Maschinentypen als Ausklappmenü -->
+    <details id="machineSection" class="collapse-section">
+      <summary><span class="collapse-arrow">▶</span> Maschinentypen</summary>
+      <div class="collapse-section-content" id="machineEditor">
+        <input id="newMachineName" placeholder="Maschinentyp">
+        <button id="createMachine" type="button">Hinzufügen</button>
+        <div id="machineList"></div>
+      </div>
+    </details>
+  </div>
+
+  <!-- Karten-Board -->
+  <div class="right">
+    <h2>Karten</h2>
+
+    <div class="filter-row">
+      <input id="searchBoard" placeholder="Suche in Karten">
+      <select id="filterMaschine">
+        <option value="">Alle Maschinentypen</option>
+      </select>
+    </div>
+
+    <div class="status-filter" id="statusFilterRow">
+      <span class="status-filter-label">Status:</span>
+      <label><input type="checkbox" id="filterStatusOpen"> Offen</label>
+      <label><input type="checkbox" id="filterStatusShipping"> Bereit für Versand</label>
+      <label><input type="checkbox" id="filterStatusDone"> FERTIG</label>
+    </div>
+
+    <button id="openMachineOverview" type="button">Maschinen-Übersicht (nach Auswahl)</button>
+
+    <div class="cards" id="cardList"></div>
+  </div>
+
+</div>
+
+<!-- Modal für Miniansicht / Bearbeiten / Löschen -->
+<div id="cardModalBackdrop" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-body">
+      <h3>Karte bearbeiten</h3>
+
+      <div class="modal-row">
+        <span class="label">Auftrag:</span>
+        <input id="modalAuftrag">
+      </div>
+      <div class="modal-row">
+        <span class="label">Kunde:</span>
+        <input id="modalKunde">
+      </div>
+      <div class="modal-row">
+        <span class="label">Projekt:</span>
+        <input id="modalProjekt">
+      </div>
+      <div class="modal-row">
+        <span class="label">Datum:</span>
+        <input id="modalDatum" type="date" min="2020-01-01" max="2080-12-31">
+      </div>
+      <div class="modal-row">
+        <span class="label">Größe:</span>
+        <select id="modalGroesse">
+          <option value="klein">Klein (1-1000 Ex.)</option>
+          <option value="mittel">Mittel (1001-3500 Ex.)</option>
+          <option value="mittelgross">Mittel/Gross (3501-7000 Ex.)</option>
+          <option value="gross">Gross (7001-10000 Ex.)</option>
+        </select>
+      </div>
+      <div class="modal-row">
+        <span class="label">Maschine:</span>
+        <input id="modalMaschine" list="machineOptions">
+      </div>
+      <div class="modal-row">
+        <span class="label">Notiz:</span>
+        <textarea id="modalNotiz" rows="2"></textarea>
+      </div>
+
+      <div class="modal-row" style="flex-direction:column; align-items:flex-start;">
+        <span class="label" style="margin-bottom:6px;">Labels:</span>
+        <div id="modalLabelList" style="width:100%;"></div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <div id="modalButtons">
+        <button type="button" class="danger" id="modalDeleteBtn">Karte löschen</button>
+        <div style="margin-left:auto; display:flex; gap:6px;">
+          <button type="button" id="modalCloseBtn">Abbrechen</button>
+          <button type="button" id="modalSaveBtn">Speichern</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bestätigungs-Modal (ersetzt window.confirm für zuverlässiges Löschen auf allen Geräten) -->
+<div id="confirmBackdrop" class="modal-backdrop" style="z-index:200;">
+  <div class="modal" style="max-width:360px; border-top-color:var(--orange);">
+    <h3 id="confirmTitle" style="font-size:16px;">Bestätigen</h3>
+    <p id="confirmMsg" style="font-size:14px; color:var(--text-muted); margin:0 0 22px;"></p>
+    <div style="display:flex; gap:8px; justify-content:flex-end;">
+      <button type="button" id="confirmCancelBtn" style="background:#f1f5f9;color:var(--text);border:1px solid var(--border);box-shadow:none;margin-top:0;">Abbrechen</button>
+      <button type="button" id="confirmOkBtn" style="background:#dc2626;margin-top:0;box-shadow:none;">Löschen</button>
+    </div>
+  </div>
+</div>
+
+<script>
+
+/* === PriEllo API layer (replaces browser-local localStorage) ===
+   Hosting: https://priello.printex.ch
+   API: /api/board.php  (GET/PUT)
+   Optional: set API_KEY in api/board.php and here.
+*/
+/* === Bestätigungs-Modal (ersetzt window.confirm – funktioniert auf iOS Safari und in allen Browsern) === */
+function priConfirm(message, onOk) {
+  const backdrop = document.getElementById("confirmBackdrop");
+  const msg      = document.getElementById("confirmMsg");
+  const btnOk    = document.getElementById("confirmOkBtn");
+  const btnCancel= document.getElementById("confirmCancelBtn");
+  msg.textContent = message;
+  backdrop.classList.add("show");
+  const close = () => backdrop.classList.remove("show");
+  const handleOk = () => { close(); btnOk.removeEventListener("click", handleOk); btnCancel.removeEventListener("click", handleCancel); onOk(); };
+  const handleCancel = () => { close(); btnOk.removeEventListener("click", handleOk); btnCancel.removeEventListener("click", handleCancel); };
+  btnOk.addEventListener("click", handleOk);
+  btnCancel.addEventListener("click", handleCancel);
+}
+/* === end Bestätigungs-Modal === */
+
+const API_URL = "api/board.php";
+const API_KEY = ""; // optional - leave empty if API has no key
+
+let boardState = { version: 0, cards: [], labels: {}, machines: [] };
+let __saveTimer = null;
+
+async function apiLoadBoard() {
+  const headers = {};
+  if (API_KEY) headers["X-API-Key"] = API_KEY;
+  const res = await fetch(API_URL, { headers, cache: "no-store" });
+  if (!res.ok) throw new Error("GET " + API_URL + " -> " + res.status);
+  const data = await res.json();
+  boardState = {
+    version: data.version ?? 0,
+    cards: data.cards ?? [],
+    labels: data.labels ?? {},
+    machines: data.machines ?? [],
+  };
+  return boardState;
+}
+
+function apiScheduleSave() {
+  clearTimeout(__saveTimer);
+  __saveTimer = setTimeout(async () => {
+    try {
+      const headers = { "Content-Type": "application/json" };
+      if (API_KEY) headers["X-API-Key"] = API_KEY;
+      const res = await fetch(API_URL, {
+        method: "PUT",
+        headers,
+        body: JSON.stringify({
+          cards: boardState.cards ?? [],
+          labels: boardState.labels ?? {},
+          machines: boardState.machines ?? [],
+          // version is maintained server-side, but we pass it through harmlessly
+          version: boardState.version ?? 0
+        })
+      });
+      if (!res.ok) throw new Error("PUT " + API_URL + " -> " + res.status);
+      const out = await res.json().catch(() => null);
+      if (out && typeof out.version === "number") boardState.version = out.version;
+    } catch (e) {
+      console.error("Save failed:", e);
+    }
+  }, 400);
+}
+
+// localStorage shim (only for the 3 PriEllo keys)
+const localStorage = {
+  getItem(key) {
+    if (key === "prielo_cards")    return JSON.stringify(boardState.cards ?? []);
+    if (key === "prielo_labels")   return JSON.stringify(boardState.labels ?? {});
+    if (key === "prielo_machines") return JSON.stringify(boardState.machines ?? []);
+    return null;
+  },
+  setItem(key, value) {
+    try {
+      if (key === "prielo_cards") {
+        boardState.cards = JSON.parse(value || "[]") || [];
+        apiScheduleSave();
+        return;
+      }
+      if (key === "prielo_labels") {
+        boardState.labels = JSON.parse(value || "{}") || {};
+        apiScheduleSave();
+        return;
+      }
+      if (key === "prielo_machines") {
+        boardState.machines = JSON.parse(value || "[]") || [];
+        apiScheduleSave();
+        return;
+      }
+    } catch (e) {
+      console.error("localStorage shim parse error:", e);
+    }
+  }
+};
+/* === end API layer === */
+
+const STORAGE_CARDS_KEY    = "prielo_cards";
+const STORAGE_LABELS_KEY   = "prielo_labels";
+const STORAGE_MACHINES_KEY = "prielo_machines";
+
+
+/* === UI (Browser) Einstellungen: Status-Filter (nicht im gemeinsamen Board-State speichern) === */
+const UI_STATUS_FILTER_KEY = "prielo_ui_status_filter_v1";
+
+function loadUiStatusFilter(){
+  try{
+    const raw = window.localStorage.getItem(UI_STATUS_FILTER_KEY);
+    if(raw){
+      const obj = JSON.parse(raw);
+      return {
+        // open/shipping: default true, unless explicitly false
+        open: obj.open !== false,
+        shipping: obj.shipping !== false,
+        // done: default false, unless explicitly true
+        done: obj.done === true,
+      };
+    }
+  }catch(e){}
+  // Default: FERTIG ausgeblendet
+  return { open:true, shipping:true, done:false };
+}
+
+function saveUiStatusFilter(f){
+  try{
+    window.localStorage.setItem(UI_STATUS_FILTER_KEY, JSON.stringify(f));
+  }catch(e){}
+}
+
+let uiStatusFilter = loadUiStatusFilter();
+
+function applyStatusFilterToControls(){
+  const a = document.getElementById("filterStatusOpen");
+  const b = document.getElementById("filterStatusShipping");
+  const c = document.getElementById("filterStatusDone");
+  if(a) a.checked = !!uiStatusFilter.open;
+  if(b) b.checked = !!uiStatusFilter.shipping;
+  if(c) c.checked = !!uiStatusFilter.done;
+}
+
+function readStatusFilterFromControls(){
+  const a = document.getElementById("filterStatusOpen");
+  const b = document.getElementById("filterStatusShipping");
+  const c = document.getElementById("filterStatusDone");
+  uiStatusFilter = {
+    open: a ? !!a.checked : true,
+    shipping: b ? !!b.checked : true,
+    done: c ? !!c.checked : false,
+  };
+  saveUiStatusFilter(uiStatusFilter);
+}
+
+let LABELS = {
+  Lieferung:{ color:"#1abc9c" },
+  DHL:{ color:"#e74c3c" },
+  Abholung:{ color:"#3498db" },
+  Fremdarbeit:{ color:"#9b59b6" }
+};
+let MACHINES = [];
+let CARD_ID_COUNTER = 1;
+
+let currentEditCardId = null;
+let modalSelectedLabels = [];
+let selectedLabels = [];  // <- Auswahl im Multi-Select
+
+let draggedMachineName = null;
+
+/* --- Schweizer Feiertage --- */
+
+function getEasterSunday(year){
+  const f = Math.floor;
+  const a = year % 19;
+  const b = f(year / 100);
+  const c = year % 100;
+  const d = f(b / 4);
+  const e = b % 4;
+  const f1 = f((b + 8) / 25);
+  const g = f((b - f1 + 1) / 3);
+  const h = (19 * a + b - d - g + 15) % 30;
+  const i = f(c / 4);
+  const k = c % 4;
+  const l = (32 + 2 * e + 2 * i - h - k) % 7;
+  const m = f((a + 11 * h + 22 * l) / 451);
+  const month = f((h + l - 7 * m + 114) / 31);
+  const day = (h + l - 7 * m + 114) % 31 + 1;
+  return new Date(year, month - 1, day);
+}
+function addDays(date, days){
+  const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  d.setDate(d.getDate() + days);
+  return d;
+}
+function sameYMD(d1,d2){
+  return d1.getFullYear()===d2.getFullYear() &&
+         d1.getMonth()===d2.getMonth() &&
+         d1.getDate()===d2.getDate();
+}
+function isSwissHoliday(date){
+  const year = date.getFullYear();
+  const fixed = [
+    {m:1,d:1},{m:1,d:2},{m:5,d:1},{m:8,d:1},{m:12,d:25},{m:12,d:26}
+  ];
+  for(const f of fixed){
+    if(date.getMonth()===(f.m-1) && date.getDate()===f.d) return true;
+  }
+  const easter = getEasterSunday(year);
+  const goodFriday     = addDays(easter, -2);
+  const easterMonday   = addDays(easter, 1);
+  const ascension      = addDays(easter, 39);
+  const pentecostMonday= addDays(easter, 50);
+  if(sameYMD(date, goodFriday))      return true;
+  if(sameYMD(date, easterMonday))    return true;
+  if(sameYMD(date, ascension))       return true;
+  if(sameYMD(date, pentecostMonday)) return true;
+  return false;
+}
+function updateDateHolidayHighlight(inputEl, hintId){
+  if(!inputEl) return;
+  const val = inputEl.value;
+  const hintEl = hintId ? document.getElementById(hintId) : null;
+  if(!val){
+    inputEl.style.backgroundColor="";
+    inputEl.style.color="";
+    if(hintEl){ hintEl.textContent=""; hintEl.className="holiday-hint normal"; }
+    return;
+  }
+  const parts = val.split("-");
+  if(parts.length!==3){
+    inputEl.style.backgroundColor="";
+    if(hintEl){ hintEl.textContent=""; hintEl.className="holiday-hint normal"; }
+    return;
+  }
+  const d = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]));
+  if(isSwissHoliday(d)){
+    inputEl.style.backgroundColor="var(--holiday-bg)";
+    inputEl.style.color="#000";
+    inputEl.title="Schweizer Feiertag";
+    if(hintEl){
+      hintEl.textContent="Schweizer Feiertag";
+      hintEl.className="holiday-hint red";
+    }
+  }else{
+    inputEl.style.backgroundColor="";
+    inputEl.style.color="";
+    inputEl.title="";
+    if(hintEl){
+      hintEl.textContent="";
+      hintEl.className="holiday-hint normal";
+    }
+  }
+}
+
+/* --- Storage --- */
+
+function ensureDefaultLabels(){
+  if(!LABELS || Object.keys(LABELS).length===0){
+    LABELS = {
+      Lieferung:{ color:"#1abc9c" },
+      DHL:{ color:"#e74c3c" },
+      Abholung:{ color:"#3498db" },
+      Fremdarbeit:{ color:"#9b59b6" }
+    };
+    saveLabels();
+  }
+}
+function loadLabels(){
+  const raw = localStorage.getItem(STORAGE_LABELS_KEY);
+  if(raw){
+    try{ LABELS = JSON.parse(raw); }catch(e){ LABELS={}; }
+  }
+  ensureDefaultLabels();
+}
+function saveLabels(){
+  localStorage.setItem(STORAGE_LABELS_KEY, JSON.stringify(LABELS));
+}
+
+function loadMachines(){
+  const raw = localStorage.getItem(STORAGE_MACHINES_KEY);
+  if(raw){
+    try{ MACHINES = JSON.parse(raw); }catch(e){ MACHINES=[]; }
+  }else MACHINES=[];
+}
+function saveMachines(){
+  localStorage.setItem(STORAGE_MACHINES_KEY, JSON.stringify(MACHINES));
+}
+
+function loadCards(){
+  const raw = localStorage.getItem(STORAGE_CARDS_KEY);
+  if(!raw) return [];
+  try{
+    const arr = JSON.parse(raw);
+    arr.forEach(c=>{
+      if(c.id){
+        const num = parseInt(String(c.id).split("_")[1]||"0",10);
+        // NOTE: use >= to avoid reusing card_1 after a reload when the highest id is 1
+        if(num >= CARD_ID_COUNTER) CARD_ID_COUNTER = num+1;
+      }
+      if(!c.status) c.status="open";
+      if(!["open","shipping","done"].includes(c.status)) c.status="open";
+      if(!c.primaryColor){
+        const first=(c.labels && c.labels[0])||null;
+        c.primaryColor = first && LABELS[first]?LABELS[first].color:"#7f8c8d";
+      }
+    });
+    return arr;
+  }catch(e){ return []; }
+}
+function saveCards(cards){
+  localStorage.setItem(STORAGE_CARDS_KEY, JSON.stringify(cards));
+}
+
+/* --- Helpers --- */
+
+function isoToDisplay(iso){
+  if(!iso) return "";
+  const parts=iso.split("-");
+  if(parts.length!==3) return iso;
+  return `${parts[2]}.${parts[1]}.${parts[0]}`;
+}
+function getPrimaryLabelColor(card){
+  return card.primaryColor || "#7f8c8d";
+}
+
+function isLightColor(hex){
+  if(!hex) return false;
+  const h = hex.startsWith("#") ? hex.slice(1) : hex;
+  if(h.length !== 6) return false;
+  const r = parseInt(h.slice(0,2),16);
+  const g = parseInt(h.slice(2,4),16);
+  const b = parseInt(h.slice(4,6),16);
+  const lum = (0.299*r + 0.587*g + 0.114*b) / 255;
+  return lum > 0.72;
+}
+
+/* --- Label UI --- */
+
+function renderLegend(){
+  const legend=document.getElementById("legend");
+  legend.innerHTML="";
+  Object.entries(LABELS).forEach(([name,obj])=>{
+    const e=document.createElement("div");
+    e.innerHTML='<span style="background:'+obj.color+'"></span>'+name;
+    legend.appendChild(e);
+  });
+}
+function renderLabelEditor(){
+  const wrap=document.getElementById("editLabelList");
+  wrap.innerHTML="";
+  Object.entries(LABELS).forEach(([name,obj])=>{
+    const box=document.createElement("div");
+    box.style.margin="3px 0";
+    box.innerHTML=`
+      <span>${name}</span>
+      <input type="color" value="${obj.color}" data-name="${name}" style="margin-left:4px;">
+    `;
+    wrap.appendChild(box);
+  });
+  wrap.querySelectorAll("input[type=color]").forEach(inp=>{
+    inp.addEventListener("input",()=>{
+      const name=inp.getAttribute("data-name");
+      LABELS[name].color=inp.value;
+      saveLabels();
+      const cards=loadCards();
+      cards.forEach(c=>{
+        if(c.labels && c.labels[0]){
+          const first=c.labels[0];
+          c.primaryColor = LABELS[first]?LABELS[first].color:"#7f8c8d";
+        }
+      });
+      saveCards(cards);
+      renderLegend();
+      renderBoard();
+    });
+  });
+}
+document.getElementById("createLabel").addEventListener("click",()=>{
+  const name=document.getElementById("newLabelName").value.trim();
+  const color=document.getElementById("newLabelColor").value;
+  if(!name){ alert("Name fehlt"); return; }
+  if(LABELS[name]){ alert("Label existiert bereits"); return; }
+  LABELS[name]={color};
+  document.getElementById("newLabelName").value="";
+  saveLabels();
+  renderLegend();
+  renderLabelEditor();
+  renderLabelChecklist();
+});
+
+/* --- Label-Auswahl (2-spaltige Checklist) --- */
+
+function renderLabelChecklist(){
+  const holder=document.getElementById("labelChecklist");
+  if(!holder) return;
+  holder.innerHTML="";
+  const names=Object.keys(LABELS);
+
+  // Kein Label definiert
+  if(names.length===0){
+    const empty=document.createElement("div");
+    empty.style.gridColumn="1 / -1";
+    empty.style.fontSize="12px";
+    empty.style.color="#666";
+    empty.textContent="Noch keine Labels vorhanden (unten im Label-Editor erstellen).";
+    holder.appendChild(empty);
+    selectedLabels=[];
+    return;
+  }
+
+  names.forEach(name=>{
+    const item=document.createElement("label");
+    item.className="label-check-item";
+    const swatchColor=(LABELS[name] && LABELS[name].color) ? LABELS[name].color : "#999";
+    item.innerHTML = `
+      <input type="checkbox" value="${name}">
+      <span class="label-swatch" style="background:${swatchColor}"></span>
+      <span>${name}</span>
+    `;
+    holder.appendChild(item);
+  });
+
+  // Sync checkbox states
+  holder.querySelectorAll('input[type="checkbox"]').forEach(cb=>{
+    cb.checked = selectedLabels.includes(cb.value);
+    cb.addEventListener("change",()=>{
+      const val=cb.value;
+      if(cb.checked){
+        if(!selectedLabels.includes(val)) selectedLabels.push(val);
+      }else{
+        selectedLabels = selectedLabels.filter(l=>l!==val);
+      }
+    });
+  });
+}
+
+/* --- Maschinentypen --- */
+
+
+function addMachine(name){
+  name=name.trim();
+  if(!name) return;
+  if(!MACHINES.includes(name)){
+    MACHINES.push(name);
+    saveMachines();
+    renderMachineUI();
+  }
+}
+function getDragAfterElement(container, y){
+  const els=[...container.querySelectorAll(".machine-item:not(.dragging)")];
+  let closest={offset:Number.NEGATIVE_INFINITY, element:null};
+  els.forEach(child=>{
+    const box=child.getBoundingClientRect();
+    const offset=y-box.top-box.height/2;
+    if(offset<0 && offset>closest.offset){
+      closest={offset,element:child};
+    }
+  });
+  return closest.element;
+}
+function renderMachineUI(){
+  const datalist=document.getElementById("machineOptions");
+  const selFilter=document.getElementById("filterMaschine");
+  const listEl=document.getElementById("machineList");
+  const currentFilter=selFilter.value;
+
+  datalist.innerHTML="";
+  MACHINES.forEach(m=>{
+    const opt=document.createElement("option");
+    opt.value=m;
+    datalist.appendChild(opt);
+  });
+
+  selFilter.innerHTML='<option value="">Alle Maschinentypen</option>';
+  MACHINES.forEach(m=>{
+    const opt=document.createElement("option");
+    opt.value=m;
+    opt.textContent=m;
+    selFilter.appendChild(opt);
+  });
+  if(MACHINES.includes(currentFilter)) selFilter.value=currentFilter;
+
+  listEl.innerHTML="";
+  MACHINES.forEach(m=>{
+    const div=document.createElement("div");
+    div.className="machine-item";
+    div.draggable=true;
+    div.dataset.name=m;
+    div.innerHTML=`
+      <span class="machine-label">${m}</span>
+      <button type="button" class="machine-delete" data-name="${m}">Löschen</button>
+    `;
+    listEl.appendChild(div);
+  });
+
+  listEl.querySelectorAll(".machine-item").forEach(item=>{
+    item.addEventListener("dragstart",e=>{
+      draggedMachineName=item.dataset.name;
+      item.classList.add("dragging");
+      e.dataTransfer.effectAllowed="move";
+    });
+    item.addEventListener("dragend",()=>{
+      draggedMachineName=null;
+      item.classList.remove("dragging");
+    });
+  });
+  listEl.addEventListener("dragover",e=>{
+    if(!draggedMachineName) return;
+    e.preventDefault();
+    const after=getDragAfterElement(listEl, e.clientY);
+    const draggingEl=[...listEl.querySelectorAll(".machine-item")]
+      .find(el=>el.dataset.name===draggedMachineName);
+    if(!draggingEl) return;
+    if(after==null) listEl.appendChild(draggingEl);
+    else listEl.insertBefore(draggingEl, after);
+  });
+  listEl.addEventListener("drop",()=>{
+    if(!draggedMachineName) return;
+    MACHINES=[...listEl.querySelectorAll(".machine-item")].map(el=>el.dataset.name);
+    saveMachines();
+    renderMachineUI();
+    renderBoard();
+  });
+
+  listEl.querySelectorAll(".machine-delete").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const name=btn.getAttribute("data-name");
+      priConfirm(`Maschinentyp "${name}" löschen? Alle Karten mit diesem Typ werden auf leer gesetzt.`, ()=>{
+        MACHINES=MACHINES.filter(x=>x!==name);
+        saveMachines();
+        const cards=loadCards();
+        cards.forEach(c=>{ if(c.maschine===name) c.maschine=""; });
+        saveCards(cards);
+        renderMachineUI();
+        renderBoard();
+      });
+    });
+  });
+}
+document.getElementById("createMachine").addEventListener("click",()=>{
+  const inp=document.getElementById("newMachineName");
+  const name=inp.value.trim();
+  if(!name){ alert("Maschinentyp fehlt."); return; }
+  if(MACHINES.includes(name)){ alert("Maschinentyp existiert bereits."); return; }
+  addMachine(name);
+  inp.value="";
+});
+
+/* --- Karten-Board --- */
+
+function createCardElement(card){
+  const div=document.createElement("div");
+  div.className="card";
+  if(card.status==="done") div.classList.add("done");
+  if(card.status==="shipping") div.classList.add("shipping");
+  div.dataset.id=card.id;
+  const color=getPrimaryLabelColor(card);
+  div.style.borderLeft = (card.status==="open" || !card.status) ? "4px solid "+color : "4px solid #fff";
+
+  const labelsHtml=(card.labels||[]).map(l=>{
+    const col = LABELS[l]?LABELS[l].color:"#7f8c8d";
+    const txt = isLightColor(col) ? "#000" : "#fff";
+    return `<span class="card-label" style="background:${col};color:${txt}">${l}</span>`;
+  }).join("");
+
+  div.innerHTML=`
+    <div class="card-header">
+      <div class="card-title">${card.auftragsnummer} ${card.kunde}</div>
+      <div class="card-date">${isoToDisplay(card.datum)}</div>
+    </div>
+    <div class="card-project">${card.projekt}</div>
+    <div class="card-labels">${labelsHtml}</div>
+    <div class="card-category">${card.maschine||""}</div>
+    ${card.notiz?`<div class="card-notes">${card.notiz}</div>`:""}
+  `;
+  div.addEventListener("dblclick",()=>openCardModal(card.id));
+  return div;
+}
+
+function renderBoard(){
+  const listEl=document.getElementById("cardList");
+  listEl.innerHTML="";
+  const search=document.getElementById("searchBoard").value.toLowerCase();
+  const fMaschine=document.getElementById("filterMaschine").value;
+
+  const showOpen = !!uiStatusFilter.open;
+  const showShipping = !!uiStatusFilter.shipping;
+  const showDone = !!uiStatusFilter.done;
+
+  let cards=loadCards();
+  cards.sort((a,b)=>{
+    if(a.datum===b.datum) return (a.auftragsnummer||"").localeCompare(b.auftragsnummer||"");
+    return (a.datum||"").localeCompare(b.datum||"");
+  });
+
+  cards.forEach(card=>{
+    const st = (card.status || "open");
+    if(st === "open" && !showOpen) return;
+    if(st === "shipping" && !showShipping) return;
+    if(st === "done" && !showDone) return;
+    if(fMaschine && card.maschine!==fMaschine) return;
+    const text=(
+      (card.auftragsnummer||"")+" "+
+      (card.kunde||"")+" "+
+      (card.projekt||"")+" "+
+      (card.maschine||"")+" "+
+      (card.labels||[]).join(" ")+" "+(card.notiz||"")
+    ).toLowerCase();
+    if(search && !text.includes(search)) return;
+    listEl.appendChild(createCardElement(card));
+  });
+}
+
+/* --- Formular neue Karte --- */
+
+document.getElementById("cardForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const auftrag=document.getElementById("fAuftrag").value.trim();
+  const kunde  =document.getElementById("fKunde").value.trim();
+  const projekt=document.getElementById("fProjekt").value.trim();
+  const datum  =document.getElementById("fDatum").value;
+  const maschine=document.getElementById("fMaschine").value.trim();
+  const notiz  =document.getElementById("fNotiz").value.trim();
+
+  if(!auftrag||!kunde||!projekt||!datum||!maschine){
+    alert("Bitte alle Pflichtfelder ausfüllen."); return;
+  }
+  if(selectedLabels.length===0){
+    alert("Bitte mindestens ein Label wählen."); return;
+  }
+  const firstLabel=selectedLabels[0];
+  const primaryColor=firstLabel && LABELS[firstLabel]?LABELS[firstLabel].color:"#7f8c8d";
+  const cards=loadCards();
+  const newCard={
+    id:"card_"+(CARD_ID_COUNTER++),
+    auftragsnummer:auftrag,
+    kunde,
+    projekt,
+    datum,
+    maschine,
+    groesse: (document.getElementById("fGroesse").value || "klein"),
+    labels:[...selectedLabels],
+    notiz,
+    status:"open",
+    primaryColor,
+    createdAt:Date.now()
+  };
+  cards.push(newCard);
+  saveCards(cards);
+  addMachine(maschine);
+  e.target.reset();
+  selectedLabels=[];
+  renderLabelChecklist();
+  updateDateHolidayHighlight(document.getElementById("fDatum"),"fDatumHint");
+  renderBoard();
+});
+
+/* --- Modal --- */
+
+function openCardModal(cardId){
+  const cards=loadCards();
+  const card=cards.find(c=>c.id===cardId);
+  if(!card) return;
+  currentEditCardId=cardId;
+  modalSelectedLabels=[...(card.labels||[])];
+  document.getElementById("modalAuftrag").value=card.auftragsnummer||"";
+  document.getElementById("modalKunde").value  =card.kunde||"";
+  document.getElementById("modalProjekt").value=card.projekt||"";
+  document.getElementById("modalDatum").value  =card.datum||"";
+  document.getElementById("modalGroesse").value = (card.groesse || "klein");
+  document.getElementById("modalMaschine").value=card.maschine||"";
+  document.getElementById("modalNotiz").value  =card.notiz||"";
+  renderModalLabelList();
+  updateDateHolidayHighlight(document.getElementById("modalDatum"));
+  document.getElementById("cardModalBackdrop").classList.add("show");
+}
+function closeCardModal(){
+  currentEditCardId=null;
+  modalSelectedLabels=[];
+  document.getElementById("cardModalBackdrop").classList.remove("show");
+}
+function renderModalLabelList(){
+  const container=document.getElementById("modalLabelList");
+  container.innerHTML="";
+  Object.keys(LABELS).forEach(name=>{
+    const checked=modalSelectedLabels.includes(name);
+    const color=(LABELS[name]&&LABELS[name].color)||"#7f8c8d";
+    const lbl=document.createElement("label");
+    lbl.innerHTML=`
+      <input type="checkbox" value="${name}" ${checked?"checked":""}>
+      <span class="label-swatch" style="background:${color};width:11px;height:11px;border-radius:3px;display:inline-block;flex-shrink:0;"></span>
+      ${name}
+    `;
+    container.appendChild(lbl);
+  });
+  container.querySelectorAll("input[type=checkbox]").forEach(cb=>{
+    cb.addEventListener("change",()=>{
+      const val=cb.value;
+      if(cb.checked){
+        if(!modalSelectedLabels.includes(val)) modalSelectedLabels.push(val);
+      }else{
+        modalSelectedLabels=modalSelectedLabels.filter(l=>l!==val);
+      }
+    });
+  });
+}
+document.getElementById("modalCloseBtn").addEventListener("click",closeCardModal);
+document.getElementById("cardModalBackdrop").addEventListener("click",e=>{
+  if(e.target.id==="cardModalBackdrop") closeCardModal();
+});
+document.getElementById("modalSaveBtn").addEventListener("click",()=>{
+  if(!currentEditCardId) return;
+  const a=document.getElementById("modalAuftrag").value.trim();
+  const k=document.getElementById("modalKunde").value.trim();
+  const p=document.getElementById("modalProjekt").value.trim();
+  const d=document.getElementById("modalDatum").value;
+  const g=document.getElementById("modalGroesse").value || "klein";
+  const m=document.getElementById("modalMaschine").value.trim();
+  const n=document.getElementById("modalNotiz").value.trim();
+  if(!a||!k||!p||!d||!m){
+    alert("Bitte alle Pflichtfelder ausfüllen."); return;
+  }
+  const cards=loadCards();
+  const idx=cards.findIndex(c=>c.id===currentEditCardId);
+  if(idx>=0){
+    const card=cards[idx];
+    card.auftragsnummer=a;
+    card.kunde=k;
+    card.projekt=p;
+    card.datum=d;
+    card.groesse=g;
+    card.maschine=m;
+    card.notiz=n;
+    card.labels=[...modalSelectedLabels];
+    const first=card.labels[0];
+    card.primaryColor=first && LABELS[first]?LABELS[first].color:"#7f8c8d";
+    saveCards(cards);
+    addMachine(m);
+  }
+  closeCardModal();
+  renderMachineUI();
+  renderBoard();
+});
+document.getElementById("modalDeleteBtn").addEventListener("click",()=>{
+  if(!currentEditCardId) return;
+  priConfirm("Karte wirklich löschen?", ()=>{
+    let cards=loadCards();
+    cards=cards.filter(c=>c.id!==currentEditCardId);
+    saveCards(cards);
+    closeCardModal();
+    renderBoard();
+  });
+});
+
+/* --- Filter & Buttons --- */
+
+document.getElementById("searchBoard").addEventListener("input",renderBoard);
+document.getElementById("filterMaschine").addEventListener("change",renderBoard);
+
+applyStatusFilterToControls();
+["filterStatusOpen","filterStatusShipping","filterStatusDone"].forEach(id=>{
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.addEventListener("change", ()=>{
+    readStatusFilterFromControls();
+    renderBoard();
+  });
+});
+
+document.getElementById("openMachineOverview").addEventListener("click",()=>{
+  const m=document.getElementById("filterMaschine").value;
+  const url=m
+    ? `prielo-maschinen-uebersicht.html?maschine=${encodeURIComponent(m)}`
+    : `prielo-maschinen-uebersicht.html`;
+  window.open(url,"_blank");
+});
+/* --- Init --- */
+
+(async function init(){
+  await apiLoadBoard();
+  loadLabels();
+  loadMachines();
+  const cards=loadCards();
+  const known=new Set(MACHINES);
+  cards.forEach(c=>{
+    if(c.maschine && !known.has(c.maschine)){
+      MACHINES.push(c.maschine);
+      known.add(c.maschine);
+    }
+  });
+  if(MACHINES.length>0) saveMachines();
+
+  renderLegend();
+  renderLabelEditor();
+  renderLabelChecklist();
+  renderMachineUI();
+  renderBoard();
+
+  // --- Auto-Sync (Server-Polling) ---
+  async function syncNow(reason){
+    try{
+      // nicht während das Bearbeitungs-Modal offen ist (sonst überschreibt man Eingaben)
+      const backdrop = document.getElementById("cardModalBackdrop");
+      if(backdrop && backdrop.classList.contains("show")) return;
+
+      await apiLoadBoard();
+      loadLabels();
+      loadMachines();
+
+      renderLegend();
+      renderLabelEditor();
+      renderLabelChecklist();
+      renderMachineUI();
+      renderBoard();
+    }catch(e){
+      console.error("Sync failed:", e, "reason:", reason);
+    }
+  }
+
+  // Browser drosseln setInterval im Hintergrund teils stark.
+  // Daher: sofort nachziehen, sobald der Tab wieder aktiv ist.
+  window.addEventListener("focus", ()=>syncNow("focus"));
+  document.addEventListener("visibilitychange", ()=>{
+    if(!document.hidden) syncNow("visibility");
+  });
+
+  setInterval(()=>syncNow("interval"), 10000);
+
+
+  const fDatum=document.getElementById("fDatum");
+  ["change","input"].forEach(ev=>{
+    fDatum.addEventListener(ev,()=>updateDateHolidayHighlight(fDatum,"fDatumHint"));
+  });
+  updateDateHolidayHighlight(fDatum,"fDatumHint");
+
+  const modalDatum=document.getElementById("modalDatum");
+  ["change","input"].forEach(ev=>{
+    modalDatum.addEventListener(ev,()=>updateDateHolidayHighlight(modalDatum));
+  });
+})();
+</script>
+
+</body>
+</html>
